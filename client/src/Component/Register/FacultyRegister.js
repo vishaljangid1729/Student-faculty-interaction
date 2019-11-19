@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Image, Header, Form, Button, Select } from 'semantic-ui-react'
+import { Grid, Image, Header, Form, Button, Select, Message } from 'semantic-ui-react'
 import Img from './../../Images/register.svg';
 import axios from 'axios'
 
@@ -30,7 +30,9 @@ export class FacultyRegister extends React.Component{
         mobile: '',
         email: '',
         error: false,
-        faculty: true
+        faculty: true,
+        alreadyExist: false,
+        success: false
     }
     onChange = (e, {name, value}) =>{
         this.setState({[name]: value});
@@ -47,10 +49,15 @@ export class FacultyRegister extends React.Component{
     }
     onSumbit = (e) =>{
         // e.preventDefault();
+        this.setState({ alreadyExist: false, success: false })
         if(this.validate()){
-            axios.post("/users/signup", this.state)
+            axios.post("http://localhost:4002/users/signup", this.state)
             .then(res =>{
-                console.log(res)
+                if (res.data.alreadyExist) {
+                    this.setState({ alreadyExist: true })
+                } else if (!res.data.alreadyExist) {
+                    this.setState({ success: true })
+                }
             })
             .catch(err =>{
                 console.log(err)
@@ -73,6 +80,24 @@ export class FacultyRegister extends React.Component{
                 <Grid.Column>
                     <div style = {style}>
                         <Header as = "h1" color = "grey" textAlign = "center" content = "Register SVNIT Faculty"></Header>
+                        {this.state.alreadyExist ? (
+                            <Message error>
+                                <Message.Header>
+                                    Account Alredy exist
+                                </Message.Header>
+                            </Message>
+                        ) : (
+                            <span></span>
+                        )}
+                        {this.state.success ? (
+                            <Message success>
+                                <Message.Header>
+                                    Account created successfully
+                                </Message.Header>
+                            </Message>
+                        ) : (
+                            <span></span>
+                        )}
                         <Form error onSubmit = {this.onSumbit}>
                             
                             <Form.Input required name = "name" value = {name} onChange = {this.onChange} label = "Full Name" placeholder = "Full Name"></Form.Input>

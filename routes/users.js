@@ -3,10 +3,16 @@ var router = express.Router()
 
 var User = require("./../models/user")
 
-router.post("/signup", (req, res, next) => {
-    console.log(req.body)
-
-    user = new User({
+router.post("/signup", async (req, res, next) => {
+  console.log(req.body)
+  User.findOne({ username: req.body.username }, (err, user) => {
+    // console.log(user)
+    if (user != null) {
+      
+      return res.json({ alreadyExist: true }).end()
+    }
+    User.create(
+      {
         username: req.body.username,
         password: req.body.password,
         fullname: req.body.name,
@@ -14,17 +20,16 @@ router.post("/signup", (req, res, next) => {
         mobile: req.body.mobile,
         email: req.body.email,
         faculty: req.body.faculty
-    })
-    user.save((err, user)=>{
-        if(err){
-            console.log(err)
-            res.end();
+      },
+      (err, user) => {
+        if (err) {
+          return res.send(err)
         }
-        else{
-            console.log(user);
-            res.end();
-        }
-    })
+        return res.json({ alreadyExist: false })
+      }
+    )
+  })
+ 
 })
 
 module.exports = router

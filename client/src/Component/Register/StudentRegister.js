@@ -1,5 +1,13 @@
 import React from "react"
-import { Grid, Image, Header, Form, Button, Select } from "semantic-ui-react"
+import {
+    Grid,
+    Image,
+    Header,
+    Form,
+    Button,
+    Select,
+    Message
+} from "semantic-ui-react"
 import Img from "./../../Images/register.svg"
 import axios from "axios"
 
@@ -28,7 +36,9 @@ export class StudentRegister extends React.Component {
         mobile: "",
         email: "",
         faculty: false,
-        error: false
+        error: false,
+        alreadyExist: false,
+        success: false
     }
     onChange = (e, { name, value }) => {
         this.setState({ [name]: value })
@@ -43,16 +53,22 @@ export class StudentRegister extends React.Component {
             return true
         }
     }
-    onSumbit = (e) => {
+    onSumbit = e => {
         // e.preventDefault();
-        if(this.validate()){
-            axios.post("/users/signup", this.state)
-            .then(res =>{
-                console.log(res)
-            })
-            .catch(err =>{
-                console.log(err)
-            })
+        this.setState({ alreadyExist: false, success: false })
+        if (this.validate()) {
+            axios
+                .post("http://localhost:4002/users/signup", this.state)
+                .then(res => {
+                    if (res.data.alreadyExist) {
+                        this.setState({ alreadyExist: true })
+                    } else if (!res.data.alreadyExist) {
+                        this.setState({ success: true })
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
         }
     }
     render() {
@@ -89,6 +105,25 @@ export class StudentRegister extends React.Component {
                             textAlign='center'
                             content='Register as SVNIT Student'
                         ></Header>
+                        {this.state.alreadyExist ? (
+                            <Message error>
+                                <Message.Header>
+                                    Account Alredy exist
+                                </Message.Header>
+                            </Message>
+                        ) : (
+                            <span></span>
+                        )}
+                        {this.state.success ? (
+                            <Message success>
+                                <Message.Header>
+                                    Account created successfully
+                                </Message.Header>
+                            </Message>
+                        ) : (
+                            <span></span>
+                        )}
+
                         <Form error onSubmit={this.onSumbit}>
                             <Form.Input
                                 required
@@ -163,7 +198,7 @@ export class StudentRegister extends React.Component {
                             )}
 
                             <Button primary floated='right'>
-                                Register 
+                                Register
                             </Button>
                             <br />
                             <br></br>

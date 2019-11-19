@@ -4,18 +4,11 @@ var path = require("path")
 var cookieParser = require("cookie-parser")
 var logger = require("morgan")
 var cors = require("cors")
-const mongoose = require('./services/mongoose');
-mongoose.connect();
+var session = require("express-session")
+var FileStore = require("session-file-store")(session)
+const mongoose = require("./services/mongoose")
+mongoose.connect()
 
-
-// var User = require('./models/user')
-
-// // User.create({username: "vishal", password: 'aaifn'})
-// .then(user =>{
-//     console.log(user)
-// })
-
-// var indexRouter = require("./routes/index")
 var usersRouter = require("./routes/users")
 
 var app = express()
@@ -24,6 +17,15 @@ app.use(logger("dev"))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
+app.use(
+    session({
+        name: "session-id",
+        secret: "12345-67890-09876-54321",
+        saveUninitialized: false,
+        resave: false,
+        store: new FileStore()
+    })
+)
 
 // app.use("/", indexRouter)
 app.use("/users", usersRouter)
@@ -31,7 +33,7 @@ app.use("/users", usersRouter)
 app.use(express.static("client/build"))
 app.get("*", (req, res, next) => {
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"))
-    next();
+    next()
 })
 
 // catch 404 and forward to error handler
