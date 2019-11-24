@@ -12,17 +12,8 @@ export default class Sort extends Component {
     return (
       <Menu text>
         <Menu.Item header>Sort By</Menu.Item>
-        <Menu.Item
-          name='newest'
-          active={activeItem === 'newest'}
-          onClick={this.handleItemClick}
-        />
-        <Menu.Item
-          name='oldest'
-          active={activeItem === 'oldest'}
-          onClick={this.handleItemClick}
-        />
-        
+        <Menu.Item name="newest" active={activeItem === 'newest'} onClick={this.handleItemClick} />
+        <Menu.Item name="oldest" active={activeItem === 'oldest'} onClick={this.handleItemClick} />
       </Menu>
     )
   }

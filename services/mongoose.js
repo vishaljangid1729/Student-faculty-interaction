@@ -1,5 +1,3 @@
-'use strict'
-
 const config = require('../config')
 const mongoose = require('mongoose')
 mongoose.Promise = require('bluebird')
@@ -8,7 +6,7 @@ mongoose.connection.on('connected', () => {
   console.log('MongoDB is connected')
 })
 
-mongoose.connection.on('error', (err) => {
+mongoose.connection.on('error', err => {
   console.log(`Could not connect to MongoDB because of ${err}`)
   process.exit(1)
 })
@@ -18,7 +16,7 @@ if (config.env === 'dev') {
 }
 
 exports.connect = () => {
-  var mongoURI = (config.env === 'prod' || 'dev' ? config.mongo.uri : config.mongo.testURI)
+  var mongoURI = config.env === 'prod' || 'dev' ? config.mongo.uri : config.mongo.testURI
 
   mongoose.connect(mongoURI, {
     keepAlive: 1,

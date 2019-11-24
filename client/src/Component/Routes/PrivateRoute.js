@@ -1,6 +1,6 @@
-import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
-import { isLoggedIn } from './AuthFunc';
+import React from 'react'
+import { Route, Redirect } from 'react-router-dom'
+import { isLoggedIn } from './AuthFunc'
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
@@ -18,6 +18,6 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
       )
     }
   />
-);
+)
 
-export default PrivateRoute;
+export default PrivateRoute
