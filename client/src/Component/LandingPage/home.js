@@ -3,6 +3,8 @@ import { HomeButton } from './HomeButtons';
 import {Header, Button} from 'semantic-ui-react'
 import Img from './../../Images/knowledge.svg'
 import { Link } from 'react-router-dom'
+import { isLoggedIn } from '../Routes/AuthFunc';
+import {Redirect} from 'react-router-dom'
 // import axios from 'axios'
 
 const style = {
@@ -17,13 +19,13 @@ const heading = {
 
 
 export class Home extends React.Component{
-    // componentDidMount(){
-    //     axios.get('http://localhost:4002')
-    //     .then(res => {
-    //         console.log(res.data)
-    //     })
-    // }
+    
+    
     render(){
+        
+        if (isLoggedIn && localStorage.getItem('username')) {
+            return <Redirect to='/home'></Redirect>
+        }
         return(
             <div style = { style }>
                 <div style = {heading}>

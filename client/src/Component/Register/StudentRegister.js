@@ -6,10 +6,12 @@ import {
     Form,
     Button,
     Select,
-    Message
+    Message, 
+    Icon
 } from "semantic-ui-react"
 import Img from "./../../Images/register.svg"
 import axios from "axios"
+import { Link} from 'react-router-dom'
 
 const options = [
     { key: "coed", text: "Computer Engineering", value: "computer" },
@@ -83,6 +85,20 @@ export class StudentRegister extends React.Component {
         } = this.state
         return (
             <Grid stackable columns={2}>
+                <div
+                    style={{
+                        zIndex: "100",
+                        paddingLeft: "2%",
+                        paddingTop: "2%",
+                        position: "fixed",
+                        marginBottom: "3%"
+                    }}
+                >
+                    <Button as={Link} to='/' icon>
+                        {" "}
+                        <Icon name='arrow left' size='large'></Icon>
+                    </Button>
+                </div>
                 <Grid.Column>
                     <br></br>
                     <br></br>
