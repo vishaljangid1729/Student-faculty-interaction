@@ -2,12 +2,12 @@
 
 # dependencies
 /node_modules
-/sessions
 /.pnp
 .pnp.js
 
 # testing
 /coverage
+/sessions
 
 # production
 /build
