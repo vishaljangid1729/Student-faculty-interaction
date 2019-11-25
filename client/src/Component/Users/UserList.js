@@ -4,32 +4,6 @@ import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { Loader_ } from '../Loader'
 
-const Users = [
-  { name: 'Vishal Jangid', username: 'u17co073', department: 'Computer', status: false },
-  { name: 'Vishal Jangid', username: 'u17co073', department: 'Computer', status: false },
-  { name: 'Vishal Jangid', username: 'u17co073', department: 'Computer', status: false },
-  { name: 'Vishal Jangid', username: 'u17co073', department: 'Computer', status: true },
-  { name: 'Vishal Jangid', username: 'u17co073', department: 'Computer', status: false },
-  { name: 'Vishal Jangid', username: 'u17co073', department: 'Computer', status: true },
-  { name: 'Vishal Jangid', username: 'u17co073', department: 'Computer', status: false },
-  { name: 'Vishal Jangid', username: 'u17co073', department: 'Computer', status: false },
-  { name: 'Vishal Jangid', username: 'u17co073', department: 'Computer', status: false },
-  { name: 'Vishal Jangid', username: 'u17co073', department: 'Computer', status: true },
-  { name: 'Vishal Jangid', username: 'u17co073', department: 'Computer', status: false },
-  { name: 'Vishal Jangid', username: 'u17co073', department: 'Computer', status: true },
-  { name: 'Vishal Jangid', username: 'u17co073', department: 'Computer', status: false },
-  { name: 'Vishal Jangid', username: 'u17co073', department: 'Computer', status: false },
-  { name: 'Vishal Jangid', username: 'u17co073', department: 'Computer', status: false },
-  { name: 'Vishal Jangid', username: 'u17co073', department: 'Computer', status: true },
-  { name: 'Vishal Jangid', username: 'u17co073', department: 'Computer', status: false },
-  { name: 'Vishal Jangid', username: 'u17co073', department: 'Computer', status: true },
-  { name: 'Vishal Jangid', username: 'u17co073', department: 'Computer', status: false },
-  { name: 'Vishal Jangid', username: 'u17co073', department: 'Computer', status: false },
-  { name: 'Vishal Jangid', username: 'u17co073', department: 'Computer', status: false },
-  { name: 'Vishal Jangid', username: 'u17co073', department: 'Computer', status: true },
-  { name: 'Vishal Jangid', username: 'u17co073', department: 'Computer', status: false },
-  { name: 'Vishal Jangid', username: 'u17co073', department: 'Computer', status: true }
-]
 const style = {
   background: '#fceef3',
   height: '100%'
@@ -42,27 +16,26 @@ export class UserList extends React.Component {
   }
 
   componentDidMount() {
-    if (!this.state.data) {
-      console.log('helloee')
-      axios
-        .get('http://localhost:4002/users/userList')
-        .then(res => {
-          // console.log(res.data)
-          // console.log(res.data[1].username)
-          this.setState({ loading: false, data: res.data })
-          res.data.map(temp => {
-            if (temp.username === localStorage.getItem('username')) {
-              temp.authorized.map(person => {
-                // authUser.push(person)
-                this.setState({ authUser: this.state.authUser.concat(person) })
-              })
-            }
-          })
+    this.setState({ loading: true, data: null, authUser: [] })
+    console.log('helloee')
+    axios
+      .get('http://localhost:4002/users/userList')
+      .then(res => {
+        // console.log(res.data)
+        // console.log(res.data[1].username)
+        this.setState({ loading: false, data: res.data })
+        res.data.map(temp => {
+          if (temp.username === localStorage.getItem('username')) {
+            temp.authorized.map(person => {
+              // authUser.push(person)
+              this.setState({ authUser: this.state.authUser.concat(person) })
+            })
+          }
         })
-        .catch(err => {
-          console.log(err)
-        })
-    }
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
   Auth(username) {
     console.log('faculty: ' + localStorage.getItem('username'))
@@ -74,6 +47,7 @@ export class UserList extends React.Component {
       })
       .then(res => {
         console.log(res)
+        this.componentDidMount()
       })
       .catch(err => {
         console.log(err)
@@ -87,6 +61,7 @@ export class UserList extends React.Component {
       })
       .then(res => {
         console.log(res)
+        this.componentDidMount()
       })
       .catch(err => {
         console.log(err)
