@@ -38,3 +38,6 @@ In terminal
 - `npm install`
 - `cd ..`
 - `npm run dev`
+
+## Output
+![](output.gif)
